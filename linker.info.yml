@@ -1,0 +1,7 @@
+name: Linker
+type: module
+description: 'Uses markdown-style [strings] to create internal links to content.'
+version: VERSION
+core: 8.x
+dependencies:
+  - node
