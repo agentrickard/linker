@@ -81,21 +81,29 @@ class LinkerFilter extends FilterBase {
       ->addTag('node_access')
       ->fields('n', array('nid', 'title'))
       ->execute();
-    $node_match = false;
+    $match = false;
     foreach ($results as $result) {
-      $node_match = true;
+      $match = true;
       $url = new Url('entity.node.canonical', array('node' => $result->nid));
-      $text = '<a href="' . $url . '">' . String::checkPlain($result->title) . '</a>';
+      $text = '<a href="' . $url . '">' . String::checkPlain($text) . '</a>';
     }
-    if (!$node_match) {
+    if (!$_match) {
       $results = db_select('taxonomy_term_field_data', 't')
         ->condition('name', $text)
         ->addTag('term_access')
         ->fields('t', array('tid', 'name'))
         ->execute();
       foreach ($results as $result) {
+        $match = true;
         $url = new Url('entity.taxonomy_term.canonical', array('taxonomy_term' => $result->tid));
-        $text = '<a href="' . $url . '">' . String::checkPlain($result->name) . '</a>';
+        $text = '<a href="' . $url . '">' . String::checkPlain($text) . '</a>';
+      }
+    }
+    if (!$match) {
+      $user = \Drupal::currentUser();
+      if ($user->hasPermission('administer content types')) {
+        $url = new Url('node.add_page');
+        $text = '<a href="' . $url . '">' . String::checkPlain($text) . '*</a>';
       }
     }
     return $text;
