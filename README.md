@@ -12,5 +12,5 @@ need to lookup additional content while writing.
 "string" is a node title or taxonomy term.
 * Create a plugin system to register additional types of entities
 to be used with the filter.
-* Create a manes to generate placeholder content if the string
+* Create a means to generate placeholder content if the string
 fails to match any targets.
